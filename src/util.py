@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier as rf
+from sklearn.tree import DecisionTreeClassifier as tree
 import sklearn.model_selection as ms
 import sklearn.metrics as sm
 
@@ -18,13 +19,25 @@ def displayFeatureImportances(columns,fittedModel,modelName):
         print(f'Rank {i}: {feature}: score: {featureValue}')
     print("\n")
 
-def fitWithGridSearch(searchParams,XTrain,yTrain):
+def fitForestWithGridSearch(searchParams,XTrain,yTrain):
     modelGridSearch = ms.GridSearchCV(rf(), param_grid=searchParams)
     modelGridSearch.fit(XTrain,yTrain)
     modelParams = modelGridSearch.best_params_
     print(modelParams)
     model = rf(n_estimators = modelParams["n_estimators"],
                 max_depth = modelParams["max_depth"],
+                max_features = modelParams["max_features"])
+    model.fit(XTrain,yTrain)
+    yPredict = model.predict(XTrain)
+    print(f"Training Score {sm.accuracy_score(yTrain,yPredict)}")
+    return model
+
+def fitTreeWithGridSearch(searchParams,XTrain,yTrain):
+    modelGridSearch = ms.GridSearchCV(rf(), param_grid=searchParams)
+    modelGridSearch.fit(XTrain,yTrain)
+    modelParams = modelGridSearch.best_params_
+    print(modelParams)
+    model = tree(max_depth = modelParams["max_depth"],
                 max_features = modelParams["max_features"])
     model.fit(XTrain,yTrain)
     yPredict = model.predict(XTrain)
