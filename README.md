@@ -1,4 +1,4 @@
-# Xp9j2p8BjSUPvzEV
+# Happy Customers
 
 ## Background 
 This is a simple classification project detecting happy and unhappy customers from a mock dataset. 
